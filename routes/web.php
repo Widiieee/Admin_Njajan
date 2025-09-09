@@ -15,6 +15,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/tentang', function () {
+    return view('tentang');
+});
+
+Route::get('/katalog', function () {
+    return view('katalog');
+});
+
+Route::get('/struktur', function () {
+    return view('struktur');
+});
+
+Route::get('/kontak', function () {
+    return view('kontak');
+});
+
+//Order
+Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
+Route::get('/katalog', [ProductController::class, 'katalog'])->name('katalog');
+
 // Default dashboard Laravel (kalau tidak dipakai bisa dihapus)
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -9,6 +9,8 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\OrderDetail;
+
 
 class OrderController extends Controller
 {
@@ -33,44 +35,63 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $req) {
+    // 1. Validasi input
         $validated = $req->validate([
-            'name'=>'required',
-            'phone'=>'required',
-            'address'=>'required',
-            'items'=>'required|array'
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'items' => 'required|array'
         ]);
 
-        $customer = Customer::firstOrCreate([
-            'phone' => $validated['phone']
-        ], [
-            'name' => $validated['name'],
-            'address' => $validated['address']
-        ]);
+        // 2. Simpan/ambil customer
+        $customer = Customer::firstOrCreate(
+            ['phone' => $validated['phone']],
+            ['name' => $validated['name'], 'address' => $validated['address']]
+        );
 
+        // 3. Buat order kosong
         $order = Order::create([
             'customer_id' => $customer->id,
             'order_date' => now(),
-            'status' => 'Belum Bayar',
+            'status' => 'Belum Bayar', // sementara default
             'total' => 0
         ]);
 
+        // 4. Proses produk
         $total = 0;
+        $status = 'Belum Bayar'; // default
         foreach($validated['items'] as $it) {
             $product = Product::findOrFail($it['product_id']);
-            $subtotal = $product->price * $it['qty'];
+            $qty = $it['qty'];
+
+            // cek stok
+            if ($qty > $product->stock) {
+                $status = 'Pre Order';
+            }
+
+            $subtotal = $product->price * $qty;
+
             $order->details()->create([
                 'product_id' => $product->id,
-                'qty' => $it['qty'],
+                'qty' => $qty,
                 'subtotal' => $subtotal
             ]);
+
             $total += $subtotal;
         }
 
-        $order->update(['total'=>$total]);
+        // 5. Update total & status order
+        $order->update([
+            'total' => $total,
+            'status' => $status
+        ]);
 
-        // notif ke admin (opsional)
-        return response()->json(['message'=>'Order diterima','order_id'=>$order->id],201);
+        return response()->json([
+            'message' => 'Order diterima',
+            'order_id' => $order->id
+        ], 201);
     }
+
 
 
     /**

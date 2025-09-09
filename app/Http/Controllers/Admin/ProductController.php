@@ -61,4 +61,10 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('admin.products.index')->with('success', 'Produk berhasil dihapus');
     }
+
+    public function katalog()
+    {
+        $products = Product::latest()->get(); // ambil semua produk
+        return view('katalog', compact('products'));
+    }
 }

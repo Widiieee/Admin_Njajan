@@ -1,0 +1,107 @@
+/* style.css — kustom styling pakai color palette Njajan */
+
+/* === PALET WARNA === */
+:root {
+  --njajan-soft: #F3FEB8;   /* background ringan */
+  --njajan-yellow: #FFDE4D; /* highlight cerah */
+  --njajan-orange: #FFB22C; /* aksen utama */
+  --njajan-red: #FF4C4C;    /* CTA / fokus */
+  --njajan-dark: #222;      /* teks utama */
+  --njajan-muted: #6b7280;  /* teks muted */
+}
+
+/* Logo circle */
+.logo { 
+  background: linear-gradient(135deg, var(--njajan-orange), var(--njajan-red)); 
+}
+
+/* Nav link */
+.nav-link {
+  color: var(--njajan-dark);
+  font-weight: 600;
+  padding: .25rem .5rem;
+  border-radius: .375rem;
+  transition: all .18s ease;
+}
+.nav-link:hover { 
+  background: var(--njajan-soft); 
+  transform: translateY(-2px); 
+  color: var(--njajan-red);
+}
+
+/* Mobile nav */
+.mobile-link { padding: .5rem 0; font-weight:600; }
+
+/* Buttons */
+.btn-primary { 
+  background: var(--njajan-red); 
+  border: none; 
+  color: #fff; 
+  transition: all .25s ease;
+}
+.btn-primary:hover { background: var(--njajan-orange); }
+
+.btn-outline { 
+  border: 2px solid var(--njajan-orange); 
+  color: var(--njajan-orange); 
+  background: transparent; 
+}
+.btn-outline:hover { 
+  background: var(--njajan-orange); 
+  color: white; 
+}
+
+/* Product cards hover */
+.product-card img, .card-product img { transition: transform .4s ease; }
+.product-card:hover img { transform: scale(1.05); }
+
+/* Feature & org cards */
+.feature-card, .org-card, .card-product { 
+  transition: box-shadow .25s ease, transform .18s ease; 
+}
+.feature-card:hover, .org-card:hover, .card-product:hover {
+  box-shadow: 0 10px 25px rgba(255, 178, 44, 0.25);
+}
+
+/* Modal */
+#orgModal { display: none; }
+#orgModal.show { display: flex; }
+
+/* Form inputs */
+.form-input {
+  width: 100%;
+  padding: .6rem .75rem;
+  border-radius: .5rem;
+  border: 1px solid var(--njajan-orange);
+  background: #fff;
+}
+.form-input:focus {
+  outline: 3px solid var(--njajan-yellow);
+  border-color: var(--njajan-red);
+}
+
+/* Hero / Section backgrounds */
+.bg-soft { background: var(--njajan-soft); }
+.bg-highlight { background: var(--njajan-yellow); }
+.bg-accent { background: var(--njajan-orange); }
+.bg-cta { background: var(--njajan-red); }
+
+/* Footer */
+footer { background: var(--njajan-red); }
+footer a:hover { color: var(--njajan-yellow); }
+
+/* Accessibility focus */
+a:focus, button:focus, input:focus, select:focus, textarea:focus { 
+  outline: 3px solid rgba(255,76,76,0.3); 
+  outline-offset: 2px; 
+}
+
+/* Utilities */
+.text-muted { color: var(--njajan-muted); }
+.text-accent { color: var(--njajan-orange); }
+.text-cta { color: var(--njajan-red); }
+
+/* Small screen logo */
+@media (max-width: 768px) {
+  .logo { width: 40px; height: 40px; font-size: 18px; }
+}
