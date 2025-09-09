@@ -86,10 +86,8 @@ class OrderController extends Controller
             'status' => $status
         ]);
 
-        return response()->json([
-            'message' => 'Order diterima',
-            'order_id' => $order->id
-        ], 201);
+        return redirect('/katalog')->with('success', 'Order berhasil dibuat');
+
     }
 
 
@@ -99,8 +97,11 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
+        $order = Order::with(['customer', 'details.product'])->findOrFail($id);
+
         return view('admin.orders.show', compact('order'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

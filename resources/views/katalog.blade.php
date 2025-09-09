@@ -8,8 +8,6 @@
     <h2 class="text-3xl font-extrabold text-center mb-12">Katalog Produk</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
       @foreach ($products as $product)
         <div class="relative group">
           <div class="flex justify-center -mb-16 z-10 relative">
@@ -31,14 +29,13 @@
         </div>
       @endforeach
     </div>
-
-    </div>
   </div>
+
   <!-- Modal Form Order -->
   <div id="orderModal" class="hidden fixed inset-0 bg-gray-800/70 flex items-center justify-center z-50">
     <div class="bg-white rounded-2xl p-6 w-full max-w-lg">
       <h3 class="text-xl font-bold mb-4">Form Pemesanan</h3>
-      <form id="orderForm">
+      <form id="orderForm" action="{{ route('order.store') }}" method="POST">
         @csrf
         <input type="hidden" name="items[0][product_id]" id="product_id">
 
@@ -86,29 +83,6 @@
   function closeOrderForm() {
     document.getElementById('orderModal').classList.add('hidden');
   }
-
-  // Kirim order via AJAX
-  document.getElementById('orderForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    let res = await fetch("{{ route('order.store') }}", {
-      method: "POST",
-      body: formData,
-      headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      }
-    });
-
-    if(res.ok) {
-      let data = await res.json();
-      alert(data.message + " (ID Pesanan: " + data.order_id + ")");
-      closeOrderForm();
-    } else {
-      alert("Gagal memesan, periksa input!");
-    }
-  });
   </script>
-
 </section>
 @endsection
